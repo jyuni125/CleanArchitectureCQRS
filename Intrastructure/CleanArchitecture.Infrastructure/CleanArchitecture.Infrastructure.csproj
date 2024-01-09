@@ -19,4 +19,11 @@
     <ProjectReference Include="..\..\Core\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Databases\NewFolder1\" />
+    <Folder Include="Databases\NewFolder\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+
 </Project>
