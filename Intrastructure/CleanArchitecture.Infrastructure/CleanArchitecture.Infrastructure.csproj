@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Databases\Repositories\" />
     <Folder Include="Databases\Context\" />
     <Folder Include="Migrations\" />
     <Folder Include="UnitOfWork\" />
