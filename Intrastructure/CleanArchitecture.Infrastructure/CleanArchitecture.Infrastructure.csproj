@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Databases\Context\" />
+    <Folder Include="Databases\Repositories\" />
     <Folder Include="Migrations\" />
     <Folder Include="UnitOfWork\" />
   </ItemGroup>
