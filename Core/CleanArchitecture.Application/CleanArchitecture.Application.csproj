@@ -16,16 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Family\" />
     <Folder Include="Commons\Exceptions\" />
     <Folder Include="Commons\Behaviour\" />
-    <Folder Include="Commons\Mappings\Profiles\" />
-    <Folder Include="Commons\Results\" />
-    <Folder Include="DTOs\Family\" />
-    <Folder Include="Queries\Family\" />
-    <Folder Include="QueryHandlers\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="CommandHandlers\" />
   </ItemGroup>
 
 </Project>

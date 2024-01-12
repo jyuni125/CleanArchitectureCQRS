@@ -1,4 +1,6 @@
-﻿using CleanArchitecture.Infrastructure.Databases.Context;
+﻿using CleanArchitecture.Domain.Contracts.IRepositories;
+using CleanArchitecture.Infrastructure.Databases.Context;
+using CleanArchitecture.Infrastructure.Databases.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +23,7 @@ namespace CleanArchitecture.Infrastructure
 
 
             //for Dependency Injection
-           // services.AddScoped(typeof(IFamilyRepository<>), typeof(FamilyRepository<>));
+            services.AddScoped(typeof(IFamilyRepository<>), typeof(FamilyRepository<>));
 
            // services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

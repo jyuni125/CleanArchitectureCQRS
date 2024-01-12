@@ -15,5 +15,7 @@ namespace CleanArchitecture.Domain.Contracts.IRepositories
         public Task<int> Delete(Guid id);
 
         public Task<IEnumerable<T>> getByLastName(string Lastname);
+
+        public Task<int> UpdateByLastname(Guid id, string lastname);
     }
 }

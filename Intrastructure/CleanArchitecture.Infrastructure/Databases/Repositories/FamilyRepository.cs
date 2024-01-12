@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CleanArchitecture.Application.Commands.Family;
 using CleanArchitecture.Domain.Contracts.IRepositories;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Infrastructure.Databases.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.Infrastructure.Databases.Repositories
 {
     public class FamilyRepository<T> : BaseRepository<T>, IBaseRepository<T>, IFamilyRepository<T>
-        where T : class,IBaseModel
+        where T : class
     {
         private readonly IMapper _mapper;
 
@@ -48,7 +50,7 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Create Repository} All fucntion error", typeof(BaseRepository<T>));
+                _logger.LogError(e, "{Create Repository} All fucntion error", typeof(FamilyRepository<T>));
                 throw;
             }
         }
@@ -69,7 +71,7 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Delete Repository} All fucntion error", typeof(BaseRepository<T>));
+                _logger.LogError(e, "{Delete Repository} All fucntion error", typeof(FamilyRepository<T>));
                 throw;
             }
         }
@@ -91,7 +93,7 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{GetFromId Repository} All fucntion error", typeof(BaseRepository<T>));
+                _logger.LogError(e, "{GetFromId Repository} All fucntion error", typeof(FamilyRepository<T>));
                 throw;
             }
         }
@@ -136,9 +138,32 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{Update Repository} All fucntion error", typeof(BaseRepository<T>));
+                _logger.LogError(e, "{Update Repository} All fucntion error", typeof(FamilyRepository<T>));
                 throw;
             }
         }
+
+        public async Task<int> UpdateByLastname(Guid id, string lastname)
+        {
+
+
+            try
+            {
+                await _db.Families
+                        .Where(data => data.Id == id)
+                        .ExecuteUpdateAsync(setters => setters
+                        .SetProperty(data => data.LastName, lastname)
+                        );
+
+                return 1;
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "{Update Repository} All fucntion error", typeof(FamilyRepository<T>));
+                throw;
+            }
+        }
+
     }
 }

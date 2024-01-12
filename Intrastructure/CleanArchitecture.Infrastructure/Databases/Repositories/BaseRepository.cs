@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.Infrastructure.Databases.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T>
-        where T : class,IBaseModel
+        where T : class
     {
         protected readonly FamilyDBContext _db;
         public readonly ILogger<BaseRepository<T>> _logger;

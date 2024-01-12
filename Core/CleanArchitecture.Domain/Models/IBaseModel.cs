@@ -8,7 +8,7 @@ namespace CleanArchitecture.Domain.Models
 {
     public interface IBaseModel
     {
-        public Guid Id { get; set; }
-        public string LastName { get; set; }
+        public Guid Id { get;  set; }
+        public string LastName { get;  set; }
     }
 }
