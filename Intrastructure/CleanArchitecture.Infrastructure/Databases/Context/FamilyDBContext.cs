@@ -18,7 +18,7 @@ namespace CleanArchitecture.Infrastructure.Databases.Context
 
         public DbSet<Family> Families { get; set; }
 
-
+        public DbSet<StoredEntity> myStoredQuery { get; set; }
 
         //for applying configuration from assembly
         protected override void OnModelCreating(ModelBuilder modelBuilder)

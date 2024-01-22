@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CleanArchitecture.Application.Commons.Behaviour;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +17,15 @@ namespace CleanArchitecture.Application
         {
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(c => c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 
+                //validation
+                c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
+            
             return services;
         }
     }

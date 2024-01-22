@@ -20,14 +20,17 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
         where T : class
     {
         private readonly IMapper _mapper;
+       
 
         public FamilyRepository(FamilyDBContext db) : base(db)
         {
+           
         }
 
         public FamilyRepository(FamilyDBContext db, ILogger<FamilyRepository<T>> logger, IMapper mapper) : base(db, logger, mapper)
         {
             _mapper = mapper;
+           
         }
 
         public async Task<Guid> Create(T t)
@@ -36,9 +39,9 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
 
             try
             {
-
+                
                 var entity = _mapper.Map<Family>(t);
-
+                
                 _db.Families.Add(entity);
                 await _db.SaveChangesAsync();
 

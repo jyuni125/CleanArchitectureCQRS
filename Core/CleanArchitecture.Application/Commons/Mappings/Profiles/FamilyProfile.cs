@@ -61,6 +61,9 @@ namespace CleanArchitecture.Application.Commons.Mappings.Profiles
             //entity -> Model   (Repository)
             //Model -> ViewModel(QueryHandler)
 
+
+
+
         }
     }
 }

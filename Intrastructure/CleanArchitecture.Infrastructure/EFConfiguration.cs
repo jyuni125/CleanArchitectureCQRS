@@ -24,8 +24,8 @@ namespace CleanArchitecture.Infrastructure
 
             //for Dependency Injection
             services.AddScoped(typeof(IFamilyRepository<>), typeof(FamilyRepository<>));
-
-           // services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IStoredFamilyRepository<>), typeof(StoredFamilyRepository<>));
+            // services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
         
     }
