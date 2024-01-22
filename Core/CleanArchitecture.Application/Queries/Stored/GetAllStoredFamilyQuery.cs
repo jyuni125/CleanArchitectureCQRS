@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Queries.Stored
 {
-    public class GetAllStoredFamily : IRequest<IEnumerable<StoredFamilyViewModel>>
+    public class GetAllStoredFamilyQuery : IRequest<IEnumerable<StoredFamilyViewModel>>
     {
     }
 }

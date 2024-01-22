@@ -20,10 +20,18 @@ namespace CleanArchitecture.WebApi.Controllers
 
 
         [HttpGet]
-        
         public async Task<IActionResult> getallfromstoredview()
         {
-            return await Handle<IEnumerable<StoredFamilyViewModel>, GetAllStoredFamily>(new GetAllStoredFamily());
+            return await Handle<IEnumerable<StoredFamilyViewModel>, GetAllStoredFamilyQuery>(new GetAllStoredFamilyQuery());
+
+        }
+
+
+        [HttpGet]
+        [Route("GetByGender")]
+        public async Task<IActionResult> storedProcedureForGettingallFamilyByGender([FromQuery]GetStoredAllFamilyByGenderDTO dto)
+        {
+            return await Handle<GetStoredAllFamilyByGenderDTO,GetAllStoredFamilyByGenderQuery, IEnumerable<StoredFamilyViewModel>>(dto);
 
         }
     }
