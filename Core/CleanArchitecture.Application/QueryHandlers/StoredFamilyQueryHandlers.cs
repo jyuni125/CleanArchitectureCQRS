@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.QueryHandlers
 {
-    public class StoredFamilyQueryHandlers : IRequestHandler<GetAllStoredFamily, IEnumerable<StoredFamilyViewModel>>
+    public class StoredFamilyQueryHandlers : IRequestHandler<GetAllStoredFamilyQuery, IEnumerable<StoredFamilyViewModel>>,
+                                             IRequestHandler<GetAllStoredFamilyByGenderQuery,IEnumerable<StoredFamilyViewModel>>
     {
         private readonly IMapper _mapper;
         private readonly IStoredFamilyRepository<StoredFamilyModel> _storedfamilyRepository;
@@ -23,9 +24,16 @@ namespace CleanArchitecture.Application.QueryHandlers
         }
 
 
-        public async Task<IEnumerable<StoredFamilyViewModel>> Handle(GetAllStoredFamily request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<StoredFamilyViewModel>> Handle(GetAllStoredFamilyQuery request, CancellationToken cancellationToken)
         {
             var data = await _storedfamilyRepository.GetAll();
+
+            return _mapper.Map<IEnumerable<StoredFamilyViewModel>>(data);
+        }
+
+        public async Task<IEnumerable<StoredFamilyViewModel>> Handle(GetAllStoredFamilyByGenderQuery request, CancellationToken cancellationToken)
+        {
+            var data = await _storedfamilyRepository.GetByGender(request.gender);
 
             return _mapper.Map<IEnumerable<StoredFamilyViewModel>>(data);
         }

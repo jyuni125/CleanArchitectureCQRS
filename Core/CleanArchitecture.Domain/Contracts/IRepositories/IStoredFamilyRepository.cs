@@ -13,5 +13,7 @@ namespace CleanArchitecture.Domain.Contracts.IRepositories
         public Task<int> Update(Guid id, object model);
 
         public Task<int> Delete(Guid id);
+
+        public Task<IEnumerable<T>> GetByGender(string gender);
     }
 }
