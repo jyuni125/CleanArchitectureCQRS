@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.DTOs.Family
+namespace CleanArchitecture.Application.DTOs.Stored
 {
-    public class GetStoredAllFamilyByGenderDTO
+    public class GetStoredFamilyByIdDTO
     {
         [Required]
-        public string gender { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Commands.Family;
-using CleanArchitecture.Application.DTOs.Family;
+using CleanArchitecture.Application.Commands.Stored;
+using CleanArchitecture.Application.DTOs.Stored;
 using CleanArchitecture.Application.Queries.Family;
 using CleanArchitecture.Application.Queries.Stored;
 using CleanArchitecture.Application.ViewModels;
@@ -32,6 +33,23 @@ namespace CleanArchitecture.WebApi.Controllers
         public async Task<IActionResult> storedProcedureForGettingallFamilyByGender([FromQuery]GetStoredAllFamilyByGenderDTO dto)
         {
             return await Handle<GetStoredAllFamilyByGenderDTO,GetAllStoredFamilyByGenderQuery, IEnumerable<StoredFamilyViewModel>>(dto);
+
+        }
+
+        [HttpGet]
+        [Route("GetByid")]
+        public async Task<IActionResult> storedProcedureForGettingallFamilyById([FromQuery] GetStoredFamilyByIdDTO dto)
+        {
+            return await Handle<GetStoredFamilyByIdDTO, GetStoredFamilyByIdQuery, StoredFamilyViewModel>(dto);
+
+        }
+
+
+        [HttpPut]
+     
+        public async Task<IActionResult> updateByStoredProcedure([FromBody] UpdateStoredFamilyDTO dto)
+        {
+            return await Handle<UpdateStoredFamilyDTO, UpdateStoredFamilyCommand, int>(dto);
 
         }
     }

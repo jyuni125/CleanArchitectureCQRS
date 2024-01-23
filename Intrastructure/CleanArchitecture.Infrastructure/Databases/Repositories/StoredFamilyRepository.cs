@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CleanArchitecture.Application.Commands.Stored;
+using CleanArchitecture.Application.DTOs.Stored;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Contracts.IRepositories;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enumerations;
+using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Infrastructure.Databases.Context;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -76,11 +82,22 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             };
         }
 
-        public Task<T> GetOne(Guid id)
+        public async Task<T> GetOne(Guid id)
         {
             try
             {
-                throw new NotImplementedException();
+                string sqlquery = "select * from dbo.getallById(@id)";
+
+
+
+                SqlParameter parameter = new SqlParameter("@id", id);
+
+
+                return await _db.myStoredQuery
+                  .FromSqlRaw(sqlquery,parameter)
+                  .ProjectTo<T>(_mapper.ConfigurationProvider)
+                  .FirstOrDefaultAsync();
+
 
             }
             catch (Exception e)
@@ -90,13 +107,44 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             };
         }
 
-        public Task<int> Update(Guid id, object model)
+        public async Task<int> Update(object model)
         {
 
             try
             {
-                throw new NotImplementedException();
 
+                var data = (UpdateStoredFamilyCommand)model;
+               
+                var getModelData = await GetOne(data.Id);
+                
+                var entityData = _mapper.Map<StoredEntity>(getModelData);
+
+
+
+
+                
+                data.Firstname =(string.IsNullOrEmpty(data.Firstname)) ? entityData.Firstname : data.Firstname;
+                data.Lastname = (string.IsNullOrEmpty(data.Lastname)) ? entityData.Lastname : data.Lastname;
+                data.Gender = (!data.Gender.HasValue)?(short)(Gender)Enum.Parse(typeof(Gender), entityData.Gender):data.Gender;
+                data.status = (!data.status.HasValue) ? (short)entityData.status : data.status;
+                
+                
+               
+
+
+                string sql = "exec UpdateFamily @id,@firstname,@lastname,@gender,@status";
+
+                SqlParameter[] parameter = { new SqlParameter("@id",data.Id.ToString()),
+                                             new SqlParameter("@firstname",(!string.IsNullOrEmpty(data.Firstname))?data.Firstname:""),
+                                             new SqlParameter("@lastname",(!string.IsNullOrEmpty(data.Lastname))?data.Lastname:""),
+                                             new SqlParameter("@gender",data.Gender.HasValue? data.Gender:0),
+                                             new SqlParameter("@status",data.status.HasValue?data.status:0)
+                                            };
+
+                return await _db.Database
+                         .ExecuteSqlRawAsync(sql,parameter);
+
+               
             }
             catch (Exception e)
             {

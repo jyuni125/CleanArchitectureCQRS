@@ -10,7 +10,7 @@ namespace CleanArchitecture.Domain.Contracts.IRepositories
     {
         public Task<Guid> Create(T t);
 
-        public Task<int> Update(Guid id, object model);
+        public Task<int> Update(object model);
 
         public Task<int> Delete(Guid id);
 
