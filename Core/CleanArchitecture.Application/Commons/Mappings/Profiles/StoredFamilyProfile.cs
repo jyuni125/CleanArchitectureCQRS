@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.DTOs.Family;
+using CleanArchitecture.Application.Commands.Stored;
+using CleanArchitecture.Application.DTOs.Stored;
 using CleanArchitecture.Application.Queries.Stored;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Entities;
@@ -19,9 +20,23 @@ namespace CleanArchitecture.Application.Commons.Mappings.Profiles
 
             CreateMap<StoredFamilyModel, StoredEntity>();
 
+            //-----------------CREATE----------------------
+         
 
 
+
+
+            //----------------UPDATE-----------------------
+
+            CreateMap<UpdateStoredFamilyDTO, UpdateStoredFamilyCommand>();
+
+
+            //---------------DELETE------------------------
+
+
+            //-------------------READ----------------------
             CreateMap<GetStoredAllFamilyByGenderDTO, GetAllStoredFamilyByGenderQuery>();
+            CreateMap<GetStoredFamilyByIdDTO, GetStoredFamilyByIdQuery>();
 
             CreateMap<StoredEntity, StoredFamilyModel>()
                 .ConstructUsing(data => new StoredFamilyModel(data.Firstname, data.Lastname, data.Gender, data.status));
