@@ -41,7 +41,8 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             {
                 
                 var entity = _mapper.Map<Family>(t);
-                
+
+                entity.AddedDate = DateTime.Now;
                 _db.Families.Add(entity);
                 await _db.SaveChangesAsync();
 
@@ -114,6 +115,7 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
                 var newdata = (UpdateFamilyCommand)model;
                 var entitydata = _mapper.Map<Family>(data);
 
+                entitydata.UpdateDate = DateTime.Now;
 
                 if (newdata.status.HasValue) entitydata.status = (int)newdata.status;
                 if (!newdata.FirstName.IsNullOrEmpty()) entitydata.FirstName = (string)newdata.FirstName;

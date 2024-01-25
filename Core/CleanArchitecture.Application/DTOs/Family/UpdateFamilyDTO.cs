@@ -12,16 +12,16 @@ namespace CleanArchitecture.Application.DTOs.Family
         [Required]
         public Guid Id { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         public int? status { get; set; } 
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         public string? FirstName { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
+        //[Required(AllowEmptyStrings = true)]
         public string? LastName { get; set; }
 
-        [Required, Range(0, 1, ErrorMessage = "(0 = Male, 1 = Female)")]
+        [ Range(0, 1, ErrorMessage = "(0 = Male, 1 = Female)")]
         public short? Gender { get; set; }
     }
 }

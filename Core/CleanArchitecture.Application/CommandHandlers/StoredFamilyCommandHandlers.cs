@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.CommandHandlers
 {
-    public class StoredFamilyCommandHandlers : IRequestHandler<UpdateStoredFamilyCommand, int>
+    public class StoredFamilyCommandHandlers : IRequestHandler<UpdateStoredFamilyCommand, int>,
+                                               IRequestHandler<CreateStoredFamilyCommand, Guid>,
+                                               IRequestHandler<DeleteStoredFamilyCommand, int>
+
     {
 
         private readonly IMapper _mapper;
@@ -26,6 +29,18 @@ namespace CleanArchitecture.Application.CommandHandlers
         public async Task<int> Handle(UpdateStoredFamilyCommand request, CancellationToken cancellationToken)
         {
             return await _repo.Update(request);
+        }
+
+        public async Task<Guid> Handle(CreateStoredFamilyCommand request, CancellationToken cancellationToken)
+        {
+            var data = _mapper.Map<StoredFamilyModel>(request);
+
+            return await _repo.Create(data);
+        }
+
+        public async Task<int> Handle(DeleteStoredFamilyCommand request, CancellationToken cancellationToken)
+        {
+            return await _repo.Delete(request.id);
         }
     }
 }

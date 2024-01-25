@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Enumerations
+namespace CleanArchitecture.Application.DTOs.Stored
 {
-    public enum Gender : short
+    public class DeleteStoredFamilyDTO
     {
-        male,
-        female,
-        undefined
+        public Guid Id { get; set; }
     }
 }

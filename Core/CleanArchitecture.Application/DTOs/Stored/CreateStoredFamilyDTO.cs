@@ -1,22 +1,20 @@
-﻿using CleanArchitecture.Domain.Enumerations;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Application.DTOs.Stored
 {
-   
-    public class StoredEntity
+    public class CreateStoredFamilyDTO
     {
-        [Key]
-        public Guid Id { get; set; }
+        
+        [Required]
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public string Gender { get; set; } 
+        [Range(0, 1, ErrorMessage = "(0 = Male, 1 = Female)")]
+        public short Gender { get; set; } = 2;
         public int status { get; set; }
     }
 }
