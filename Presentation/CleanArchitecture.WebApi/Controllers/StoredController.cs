@@ -46,10 +46,23 @@ namespace CleanArchitecture.WebApi.Controllers
 
 
         [HttpPut]
-     
         public async Task<IActionResult> updateByStoredProcedure([FromBody] UpdateStoredFamilyDTO dto)
         {
             return await Handle<UpdateStoredFamilyDTO, UpdateStoredFamilyCommand, int>(dto);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStoredProcedure([FromQuery] CreateStoredFamilyDTO dto)
+        {
+            return await Handle<CreateStoredFamilyDTO, CreateStoredFamilyCommand, Guid>(dto);
+
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteStoredProcedure([FromQuery] DeleteStoredFamilyDTO dto)
+        {
+            return await Handle<DeleteStoredFamilyDTO, DeleteStoredFamilyCommand, int>(dto);
 
         }
     }

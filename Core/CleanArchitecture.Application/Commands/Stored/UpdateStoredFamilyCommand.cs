@@ -12,9 +12,9 @@ namespace CleanArchitecture.Application.Commands.Stored
     {
 
         public Guid Id { get; set; }
-        public string? Firstname { get; set; } = string.Empty;
-        public string? Lastname { get; set; } = string.Empty;
-        public short? Gender { get; set; } = 0;
-        public short? status { get; set; } = 0;
+        public string? Firstname { get; set; } //= string.Empty;
+        public string? Lastname { get; set; }// = string.Empty;
+        public short? Gender { get; set; } //= 0;
+        public int? status { get; set; } //= 0;
     }
 }

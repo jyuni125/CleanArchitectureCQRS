@@ -15,8 +15,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CleanArchitecture.Infrastructure.Databases.Repositories
 {
@@ -33,12 +35,31 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             _logger = logger;
         }
 
-        public Task<Guid> Create(T t)
+        public async Task<Guid> Create(T t)
         {
             try
             {
-                throw new NotImplementedException();
+                var data = _mapper.Map<StoredEntity>(t);
 
+
+                data.Id = Guid.NewGuid(); 
+
+
+                string sql = "exec createfamily @id,@firstname,@lastname,@gender,@status";
+
+                SqlParameter[] parameter = { new SqlParameter("@id",data.Id.ToString()),
+                    new SqlParameter("@firstname",(!string.IsNullOrEmpty(data.Firstname))?data.Firstname:""),
+                    new SqlParameter("@lastname",(!string.IsNullOrEmpty(data.Lastname))?data.Lastname:""),
+                    new SqlParameter("@gender",(!string.IsNullOrEmpty(data.Gender))?(short)(int)(Gender)Enum.Parse(typeof(Gender), data.Gender):2),
+                    new SqlParameter("@status",data.status< 0?data.status:0)
+                };
+
+
+                 await _db.Database
+                       .ExecuteSqlRawAsync(sql, parameter);
+
+
+                return data.Id;
             }
             catch (Exception e)
             {
@@ -47,11 +68,19 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
             };
         }
 
-        public Task<int> Delete(Guid id)
+        public async Task<int> Delete(Guid id)
         {
             try
             {
-                throw new NotImplementedException();
+                string sqlquery = "exec deleteById @id";
+
+
+
+                SqlParameter parameter = new SqlParameter("@id", id);
+
+
+                return await _db.Database
+                         .ExecuteSqlRawAsync(sqlquery, parameter);
 
             }
             catch (Exception e)
@@ -65,15 +94,13 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
         {
             try
             {
-                string sqlquery = "select * from getallfamilies";
+                string sqlquery = "select * from dbo.getallfamilies";
 
                 return await _db.myStoredQuery
                     .FromSqlRaw(sqlquery)
                     .ProjectTo<T>(_mapper.ConfigurationProvider)
                     .ToListAsync();
-
-               
-
+           
             }
             catch (Exception e)
             {
@@ -125,8 +152,8 @@ namespace CleanArchitecture.Infrastructure.Databases.Repositories
                 
                 data.Firstname =(string.IsNullOrEmpty(data.Firstname)) ? entityData.Firstname : data.Firstname;
                 data.Lastname = (string.IsNullOrEmpty(data.Lastname)) ? entityData.Lastname : data.Lastname;
-                data.Gender = (!data.Gender.HasValue)?(short)(Gender)Enum.Parse(typeof(Gender), entityData.Gender):data.Gender;
-                data.status = (!data.status.HasValue) ? (short)entityData.status : data.status;
+                data.Gender = (!data.Gender.HasValue)? (short)(int)(Gender)Enum.Parse(typeof(Gender), entityData.Gender) : data.Gender;
+                data.status = (!data.status.HasValue) ? entityData.status : data.status;
                 
                 
                

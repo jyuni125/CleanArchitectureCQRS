@@ -12,8 +12,8 @@ namespace CleanArchitecture.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime AddedDate { get; set; } = DateTime.Now;
-        public DateTime UpdateDate { get; set; } = DateTime.Now;
+        public DateTime AddedDate { get; set; }
+        public DateTime UpdateDate { get; set; }
         public int status { get; set; }
     }
 }

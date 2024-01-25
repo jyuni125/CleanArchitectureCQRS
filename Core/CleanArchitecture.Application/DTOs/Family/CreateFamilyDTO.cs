@@ -16,9 +16,9 @@ namespace CleanArchitecture.Application.DTOs.Family
         [Required(AllowEmptyStrings = true)]
         public string LastName { get; set; }
         [Required, Range(0, 1, ErrorMessage = " (0 = Male, 1 = Female)")]
-        public short Gender { get; set; }
+        public short Gender { get; set; } = 2;
 
-        
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Gender > 1)
