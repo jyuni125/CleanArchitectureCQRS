@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Commands.Family
 {
-    public class UpdateByLastnameFamilyCommand : IRequest<int>
+    public class UpdateByLastnameFamilyCommand : IRequest
     {
         public Guid Id { get; set; }
         public string Lastname { get; set; }

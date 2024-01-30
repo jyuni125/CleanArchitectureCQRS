@@ -1,33 +1,42 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Commands.Family;
+using CleanArchitecture.Application.Commons.Results;
 using CleanArchitecture.Application.DTOs.Family;
 using CleanArchitecture.Application.Queries.Family;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Domain.Contracts.IServices;
+using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
+using CleanArchitecture.Domain.Models;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace CleanArchitecture.WebApi.Controllers
 {
     public class FamilyController : BaseController
     {
+       
 
-        public FamilyController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public FamilyController(IMediator mediator, IMapper mapper, IFamilyServices<FamilyModel> service) : base(mediator, mapper)
         {
+            
         }
 
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
-            return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
+             return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
+  
         }
 
         [HttpGet]
         [Route("ById")]
         public async Task<IActionResult> GetById([FromQuery] GetFamilyByIdDTO dto)
         {
-            return await Handle<GetFamilyByIdDTO, GetAllFamilyByIdQuery,FamilyViewModel > (dto);
+             return await Handle<GetFamilyByIdDTO, GetAllFamilyByIdQuery,FamilyViewModel > (dto);
+
         }
 
 
@@ -57,7 +66,7 @@ namespace CleanArchitecture.WebApi.Controllers
         [Route("UpdateLastname")]
         public async Task<IActionResult> UpdateLastname([FromBody] UpdateByLastnameFamilyDTO dto)
         {
-            return await Handle<UpdateByLastnameFamilyDTO, UpdateByLastnameFamilyCommand, int>(dto);
+            return await Handle<UpdateByLastnameFamilyDTO, UpdateByLastnameFamilyCommand, Unit>(dto);
 
         }
 
@@ -69,8 +78,17 @@ namespace CleanArchitecture.WebApi.Controllers
 
         }
 
-      
 
+        [HttpDelete("byId/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            DeleteFamilyDTO dto = new DeleteFamilyDTO();
+
+            dto.Id = id;
+
+            return await Handle<DeleteFamilyDTO, DeleteFamilyCommand, int>(dto);
+
+        }
 
     }
 }
