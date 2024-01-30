@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Commands.Family;
 using CleanArchitecture.Domain.Contracts.IRepositories;
+using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
 using CleanArchitecture.Domain.Models;
 using MediatR;
 using System;
@@ -14,15 +15,17 @@ namespace CleanArchitecture.Application.CommandHandlers
     public class FamilyCommandHandlers : IRequestHandler<CreateFamilyCommand, Guid>
                                         , IRequestHandler<UpdateFamilyCommand, int>
                                         , IRequestHandler<DeleteFamilyCommand, int>
-                                        , IRequestHandler<UpdateByLastnameFamilyCommand, int>
+                                        , IRequestHandler<UpdateByLastnameFamilyCommand>
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository<FamilyModel> _repo;
+        private readonly IFamilyServices<FamilyModel> _repo2;
 
-        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo)
+        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo,IFamilyServices<FamilyModel> repo2)
         {
             _mapper = mapper;
             _repo = repo;
+            _repo2 = repo2;
         }
 
 
@@ -44,9 +47,11 @@ namespace CleanArchitecture.Application.CommandHandlers
             return await _repo.Delete(request.Id);
         }
 
-        public async Task<int> Handle(UpdateByLastnameFamilyCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateByLastnameFamilyCommand request, CancellationToken cancellationToken)
         {
-            return await _repo.UpdateByLastname(request.Id, request.Lastname);
+             await _repo2.UpdateByLastname(request.Id, request.Lastname);
+
+            return;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace CleanArchitecture.Domain.Models
             this.Gender = (Gender)Gender;
             this.status = status;
         }
-        
+        /*
         
         public StoredFamilyModel(string Firstname, string Lastname, int status) //, string Gender
         {
@@ -25,7 +25,7 @@ namespace CleanArchitecture.Domain.Models
             this.Lastname = Lastname;
           //  this.Gender = (Gender)Enum.Parse(typeof(Gender), Gender,true);
             this.status = status;
-        }
+        }*/
         
 
         public string Firstname { get; private set; }
