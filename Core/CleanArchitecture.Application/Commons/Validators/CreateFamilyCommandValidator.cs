@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.DTOs.Validators
+namespace CleanArchitecture.Application.Commons.Validators
 {
     public class CreateFamilyCommandValidator : AbstractValidator<CreateFamilyCommand>
     {

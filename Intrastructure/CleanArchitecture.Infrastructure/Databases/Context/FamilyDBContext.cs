@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Databases.Context
 {
-    public class FamilyDBContext : DbContext
+    public class FamilyDBContext : IdentityDbContext<User,Role,Guid>
     {
 
         public FamilyDBContext() { }
