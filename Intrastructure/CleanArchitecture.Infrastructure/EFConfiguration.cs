@@ -1,14 +1,17 @@
 ﻿using CleanArchitecture.Domain.Contracts.IRepositories;
 using CleanArchitecture.Domain.Contracts.IServices.IServices;
 using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
+using CleanArchitecture.Domain.Contracts.ITokens;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infrastructure.Databases.Context;
 using CleanArchitecture.Infrastructure.Databases.Repositories;
 using CleanArchitecture.Infrastructure.Tokens;
 using CleanArchitecture.Services.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +59,30 @@ namespace CleanArchitecture.Infrastructure
 
             //for token settings
             services.Configure<TokenSettings>(configuration.GetSection("JWT"));
+            services.AddTransient<ITokenService, TokenServices>();
+
+
+            //for authentication
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
+            {
+                opt.SaveToken = true;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
+                    ValidateLifetime = false,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidAudience = configuration["JWT:Audience"],
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
         }
         

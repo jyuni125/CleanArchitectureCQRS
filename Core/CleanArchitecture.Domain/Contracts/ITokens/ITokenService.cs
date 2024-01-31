@@ -15,6 +15,6 @@ namespace CleanArchitecture.Domain.Contracts.ITokens
 
         string GenerateRefreshToken();
 
-        ClaimsPrincipal? GetPrincipalFromExpiredToken();
+        ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token);
     }
 }

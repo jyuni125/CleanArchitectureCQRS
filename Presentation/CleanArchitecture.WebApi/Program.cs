@@ -1,6 +1,7 @@
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
 using CleanArchitecture.Services.Poco;
+using Microsoft.OpenApi.Models;
 
 
 
@@ -23,6 +24,31 @@ builder.Services.AddSwaggerGen(s =>
         Title = "CLEAN ARCHITECTURE API v1",
         Description = "THIS IS A SAMPLE API ONLY"
     });
+
+    s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "'Bearer' SPACE and token after \r\n\r\n For Example : \"Bearer eyJhbGci0iJIUzIlNiIsInRScCI6IkpXVCJ9\""
+    });
+    s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+
 });
 
 
