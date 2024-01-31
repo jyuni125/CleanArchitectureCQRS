@@ -4,6 +4,7 @@ using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infrastructure.Databases.Context;
 using CleanArchitecture.Infrastructure.Databases.Repositories;
+using CleanArchitecture.Infrastructure.Tokens;
 using CleanArchitecture.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,10 @@ namespace CleanArchitecture.Infrastructure
             services.AddScoped<IEmailSender, EmailSender>();
             // services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
+
+
+            //for token
             services.AddIdentityCore<User>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
@@ -45,8 +50,13 @@ namespace CleanArchitecture.Infrastructure
             })
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<FamilyDBContext>();
-                
-                
+
+
+
+
+            //for token settings
+            services.Configure<TokenSettings>(configuration.GetSection("JWT"));
+
         }
         
     }
