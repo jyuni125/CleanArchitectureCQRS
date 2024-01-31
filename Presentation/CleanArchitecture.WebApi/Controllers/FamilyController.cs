@@ -5,8 +5,10 @@ using CleanArchitecture.Application.DTOs.Family;
 using CleanArchitecture.Application.Queries.Family;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Contracts.IServices;
+using CleanArchitecture.Domain.Contracts.IServices.IServices;
 using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
 using CleanArchitecture.Domain.Models;
+using CleanArchitecture.Services.Poco;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +19,43 @@ namespace CleanArchitecture.WebApi.Controllers
 {
     public class FamilyController : BaseController
     {
-       
+        private readonly IEmailSender _emailsender;
 
-        public FamilyController(IMediator mediator, IMapper mapper, IFamilyServices<FamilyModel> service) : base(mediator, mapper)
+
+
+        public FamilyController(IMediator mediator, IMapper mapper, IFamilyServices<FamilyModel> service,IEmailSender emailsender) : base(mediator, mapper)
         {
-            
+            _emailsender = emailsender;
         }
 
         [HttpGet]
         public async Task<IActionResult> Getall()
         {
+            /*
+            await _emailsender.send(new[]
+                                    {
+                                        "arbertamaro@gmail.com"
+                                     },
+                                    "Sample Subject",
+                                    "Sample email body");
+
+
+            await _emailsender.send(new[]
+                                     {
+                                        "arbertamaro@gmail.com"
+                                     },
+                                      "Sample Subject",
+                                      "Sample <h1>email</h1> body",
+                                      true,
+                                      "Amaro_Arbert_CV.pdf",
+                                      System.IO.File.ReadAllBytes("C:/Users/arber/Desktop/RESUME/Amaro_Arbert_CV.pdf"));
+          
+
+            return Ok("Email Sent");
+              */
              return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
-  
+
+
         }
 
         [HttpGet]

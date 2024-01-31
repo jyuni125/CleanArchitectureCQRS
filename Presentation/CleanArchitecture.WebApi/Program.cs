@@ -1,9 +1,14 @@
 using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
+using CleanArchitecture.Services.Poco;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplicationServices();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 // Add services to the container.
 
@@ -46,7 +51,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllers();
 
 app.Run();

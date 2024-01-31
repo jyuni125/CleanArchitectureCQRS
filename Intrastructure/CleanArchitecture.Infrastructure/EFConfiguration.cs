@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Domain.Contracts.IRepositories;
 using CleanArchitecture.Domain.Contracts.IServices.IServices;
 using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infrastructure.Databases.Context;
 using CleanArchitecture.Infrastructure.Databases.Repositories;
 using CleanArchitecture.Services.Services;
@@ -30,7 +31,22 @@ namespace CleanArchitecture.Infrastructure
             services.AddScoped(typeof(IStoredFamilyRepository<>), typeof(StoredFamilyRepository<>));
             services.AddScoped(typeof(IFamilyServices<>), typeof(FamilyServices<>));
             services.AddScoped<IRestCall,RestCall>();
+            services.AddScoped<IEmailSender, EmailSender>();
             // services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddIdentityCore<User>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredLength = 2;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+                opt.SignIn.RequireConfirmedEmail = false;
+            })
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<FamilyDBContext>();
+                
+                
         }
         
     }
