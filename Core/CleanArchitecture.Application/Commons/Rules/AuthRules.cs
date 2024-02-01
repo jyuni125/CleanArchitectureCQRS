@@ -16,5 +16,11 @@ namespace CleanArchitecture.Application.Commons.Rules
             if (user is not null) throw new UserAlreadyExistException();
             return Task.CompletedTask;
         }
+
+        public Task EmailorPasswordShouldNotBeInvalid(User? user,bool checkpassword)
+        {
+            if(user is null || !checkpassword) throw new EmailOrPasswordShouldNotBeInvalidException();
+            return Task.CompletedTask;
+        }
     }
 }
