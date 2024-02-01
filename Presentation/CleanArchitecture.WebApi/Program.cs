@@ -11,6 +11,12 @@ builder.Services.AddApplicationServices();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+
+
+//for Autherization
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 // Add services to the container.
 
 builder.Services.AddControllers();

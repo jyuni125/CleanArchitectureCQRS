@@ -1,4 +1,6 @@
-﻿using CleanArchitecture.Application.Commons.Behaviour;
+﻿using CleanArchitecture.Application.Bases;
+using CleanArchitecture.Application.Commons.Behaviour;
+using CleanArchitecture.Application.Commons.Rules;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,28 @@ namespace CleanArchitecture.Application
                 //validation
                 c.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
-            
+
+
+            //for rules
+            services.AddTransient<AuthRules>();
+            services.AddRulesFromAssemblyContaining(Assembly.GetEntryAssembly(), typeof(BaseRules));
+
+
+            return services;
+        }
+
+        public static IServiceCollection AddRulesFromAssemblyContaining(this IServiceCollection services,
+                                                                        Assembly assembly,
+                                                                        Type type )
+        {
+
+            var types = assembly.GetTypes().Where(t => t.IsSubclassOf(type) && type != t).ToList();
+
+            foreach(var item in types)
+            {
+                services.AddTransient(item);
+            }
+
             return services;
         }
     }
