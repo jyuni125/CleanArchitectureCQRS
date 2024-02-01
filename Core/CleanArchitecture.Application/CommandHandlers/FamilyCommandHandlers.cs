@@ -19,13 +19,13 @@ namespace CleanArchitecture.Application.CommandHandlers
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository<FamilyModel> _repo;
-        private readonly IFamilyServices<FamilyModel> _repo2;
 
-        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo,IFamilyServices<FamilyModel> repo2)
+
+        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo)
         {
             _mapper = mapper;
             _repo = repo;
-            _repo2 = repo2;
+ 
         }
 
 
@@ -49,7 +49,7 @@ namespace CleanArchitecture.Application.CommandHandlers
 
         public async Task Handle(UpdateByLastnameFamilyCommand request, CancellationToken cancellationToken)
         {
-             await _repo2.UpdateByLastname(request.Id, request.Lastname);
+             await _repo.UpdateByLastname(request.Id, request.Lastname);
 
             return;
         }
