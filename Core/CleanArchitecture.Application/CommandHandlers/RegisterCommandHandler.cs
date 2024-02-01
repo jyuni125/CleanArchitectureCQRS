@@ -51,7 +51,10 @@ namespace CleanArchitecture.Application.CommandHandlers
            user.UserName = request.Email;
            user.SecurityStamp = Guid.NewGuid().ToString();
 
+           //create users
            IdentityResult result = await _userManager.CreateAsync(user, request.Password);
+
+           //create Roles
            if(result.Succeeded)
            {
                if(!await _roleManager.RoleExistsAsync("user"))

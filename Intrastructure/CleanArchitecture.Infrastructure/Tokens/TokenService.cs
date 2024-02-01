@@ -53,7 +53,7 @@ namespace CleanArchitecture.Infrastructure.Tokens
                 signingCredentials: new SigningCredentials(key,SecurityAlgorithms.HmacSha256)
                 );
 
-
+            //for claims
             await _usermanager.AddClaimsAsync(user, claims);
 
             return token;

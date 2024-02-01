@@ -28,7 +28,7 @@ namespace CleanArchitecture.Infrastructure
             services.AddDbContext<FamilyDBContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
-
+            
 
             //for Dependency Injection
             services.AddScoped(typeof(IFamilyRepository<>), typeof(FamilyRepository<>));
