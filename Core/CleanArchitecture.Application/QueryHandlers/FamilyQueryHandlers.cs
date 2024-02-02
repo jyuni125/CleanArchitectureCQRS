@@ -4,9 +4,11 @@ using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Contracts.IRepositories;
 using CleanArchitecture.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,17 +20,21 @@ namespace CleanArchitecture.Application.QueryHandlers
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository<FamilyModel> _familyRepository;
-        public FamilyQueryHandlers(IMapper mapper, IFamilyRepository<FamilyModel> familyRepository)
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly string userId;
+        public FamilyQueryHandlers(IMapper mapper, IFamilyRepository<FamilyModel> familyRepository, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _familyRepository = familyRepository;
+            _httpContextAccessor = httpContextAccessor;
+            userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         public async Task<IEnumerable<FamilyViewModel>> Handle(GetAllFamilyQuery request, CancellationToken cancellationToken)
         {
             var data = await _familyRepository.GetAll();
 
-            return _mapper.Map<IEnumerable<FamilyViewModel>>(data);
+             return _mapper.Map<IEnumerable<FamilyViewModel>>(data);
 
         }
 

@@ -2,6 +2,7 @@ using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
 using CleanArchitecture.Services.Poco;
 using Microsoft.OpenApi.Models;
+using CleanArchitecture.Application.Commons.Exceptions;
 
 
 
@@ -81,9 +82,9 @@ if (app.Environment.IsDevelopment())
         s.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample Web Api Only");
     });
 }
-
+app.ConfigureExceptionHandlingMiddlewere();
 app.UseAuthorization();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.MapControllers();
 
 app.Run();
