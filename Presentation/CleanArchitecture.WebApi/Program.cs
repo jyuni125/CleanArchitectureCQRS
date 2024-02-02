@@ -2,7 +2,7 @@ using CleanArchitecture.Infrastructure;
 using CleanArchitecture.Application;
 using CleanArchitecture.Services.Poco;
 using Microsoft.OpenApi.Models;
-using CleanArchitecture.Application.Commons.Exceptions;
+using CleanArchitecture.Application.Commons.Exceptions.GlobalException;
 
 
 

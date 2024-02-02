@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Commons.Exceptions
+namespace CleanArchitecture.Application.Commons.Exceptions.GlobalException
 {
     public class ExceptionMiddlewere : IMiddleware
     {
@@ -17,7 +17,7 @@ namespace CleanArchitecture.Application.Commons.Exceptions
             {
                 await next(httpContext);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await HandlerExceptionAsync(httpContext, ex);
             }
@@ -56,7 +56,7 @@ namespace CleanArchitecture.Application.Commons.Exceptions
                 BadRequestException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status400BadRequest,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
-                _=>StatusCodes.Status500InternalServerError
+                _ => StatusCodes.Status500InternalServerError
             };
     }
-}   
+}

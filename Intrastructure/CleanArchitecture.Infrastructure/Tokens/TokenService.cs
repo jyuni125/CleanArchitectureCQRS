@@ -93,8 +93,9 @@ namespace CleanArchitecture.Infrastructure.Tokens
             {
                 throw new SecurityTokenException("Token Not Found");
             }
+               
 
-            throw new NotImplementedException();
+            return principal;
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Commands.Auth.Login;
+using CleanArchitecture.Application.Commands.Auth.RefreshToken;
 using CleanArchitecture.Application.Commands.Auth.Register;
 using CleanArchitecture.Domain.Models.AuthResponse;
 using CleanArchitecture.WebApi.Common;
@@ -30,8 +31,15 @@ namespace CleanArchitecture.WebApi.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand com)
         {
-
             return await Handle<LoginResponse, LoginCommand>(com);
+
+        }
+
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand com)
+        {
+            return await Handle<RefreshTokenResponse, RefreshTokenCommand>(com);
 
         }
     }
