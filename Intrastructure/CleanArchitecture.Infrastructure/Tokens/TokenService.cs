@@ -18,12 +18,13 @@ namespace CleanArchitecture.Infrastructure.Tokens
     {
         private readonly UserManager<User> _usermanager;
         private readonly TokenSettings _tokenssettings;
+        //private readonly TokenValidationParameters _validationparameters;
 
-
-        public TokenServices(IOptions<TokenSettings> options,UserManager<User> userManager)
+        public TokenServices(IOptions<TokenSettings> options,UserManager<User> userManager)//,TokenValidationParameters validationParameters
         {
             _usermanager = userManager;
             _tokenssettings = options.Value;
+          //  _validationparameters = validationParameters;
         }
 
 
@@ -48,7 +49,8 @@ namespace CleanArchitecture.Infrastructure.Tokens
             var token = new JwtSecurityToken(
                 issuer: _tokenssettings.Issuer,
                 audience: _tokenssettings.Audience,
-                expires: DateTime.Now.AddMinutes(_tokenssettings.TokenValidityInMinutes),
+                //expires: DateTime.Now.AddMinutes(_tokenssettings.TokenValidityInMinutes),
+                expires: DateTime.Now.AddSeconds(60),
                 claims : claims,
                 signingCredentials: new SigningCredentials(key,SecurityAlgorithms.HmacSha256)
                 );
@@ -94,5 +96,21 @@ namespace CleanArchitecture.Infrastructure.Tokens
 
             throw new NotImplementedException();
         }
+
+
+        public bool IsValid(string token)
+        {
+            try
+            {
+              //  var tokenHandler = new JwtSecurityTokenHandler();
+              //  tokenHandler.ValidateToken(token, _validationparameters, out SecurityToken securityToken);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

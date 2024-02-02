@@ -16,14 +16,14 @@ namespace CleanArchitecture.Application.Bases
         protected readonly IMapper _mapper;
         protected readonly IFamilyRepository<FamilyModel> _repo;
         protected readonly IHttpContextAccessor _httpContextAccessor;
-        protected readonly string _userId;
+        protected readonly string userId;
 
         public BaseHandler(IMapper mapper, IFamilyRepository<FamilyModel> repo,IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _repo = repo;
             _httpContextAccessor = httpContextAccessor;
-            _userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         }
     }

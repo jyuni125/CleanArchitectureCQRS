@@ -11,6 +11,7 @@ using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Services.Poco;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -29,10 +30,11 @@ namespace CleanArchitecture.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Getall()
         {
             /*
-            await _emailsender.send(new[]
+            await _emailsender.send(new[] 
                                     {
                                         "arbertamaro@gmail.com"
                                      },

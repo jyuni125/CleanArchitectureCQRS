@@ -4,9 +4,11 @@ using CleanArchitecture.Domain.Contracts.IRepositories;
 using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
 using CleanArchitecture.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +21,16 @@ namespace CleanArchitecture.Application.CommandHandlers
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository<FamilyModel> _repo;
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly string _userId;
 
-
-        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo)
+        public FamilyCommandHandlers(IMapper mapper, IFamilyRepository<FamilyModel> repo, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _repo = repo;
- 
+            _httpContextAccessor = httpContextAccessor;
+            _userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         }
 
 
