@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Bases;
 using CleanArchitecture.Application.Commons.Behaviour;
 using CleanArchitecture.Application.Commons.Exceptions;
+using CleanArchitecture.Application.Commons.Exceptions.GlobalException;
 using CleanArchitecture.Application.Commons.Rules;
 using FluentValidation;
 using MediatR;

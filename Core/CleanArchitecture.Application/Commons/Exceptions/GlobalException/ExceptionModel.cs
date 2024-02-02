@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Commons.Exceptions
+namespace CleanArchitecture.Application.Commons.Exceptions.GlobalException
 {
     public class ExceptionModel : ErrorStatusCode
     {
         public IEnumerable<string> Errors { get; set; }
-        
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
@@ -19,6 +19,6 @@ namespace CleanArchitecture.Application.Commons.Exceptions
 
     public class ErrorStatusCode
     {
-        public int StatusCode { get; set;}
+        public int StatusCode { get; set; }
     }
 }

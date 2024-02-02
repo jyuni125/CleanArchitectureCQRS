@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Application.Commons.Exceptions
+namespace CleanArchitecture.Application.Commons.Exceptions.GlobalException
 {
     public static class ConfigureExceptionMiddlewere
     {
