@@ -9,23 +9,13 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="SendGrid" Version="9.29.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\Family\" />
-    <Folder Include="Commons\Exceptions\" />
-    <Folder Include="Commons\Behaviour\" />
-    <Folder Include="Commons\Mappings\Profiles\" />
-    <Folder Include="Commons\Results\" />
-    <Folder Include="DTOs\Family\" />
-    <Folder Include="Queries\Family\" />
-    <Folder Include="QueryHandlers\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="CommandHandlers\" />
+    <ProjectReference Include="..\CleanArchitecture.Services\CleanArchitecture.Services.csproj" />
   </ItemGroup>
 
 </Project>
