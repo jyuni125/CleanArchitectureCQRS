@@ -20,20 +20,21 @@ namespace CleanArchitecture.Application.QueryHandlers
     {
         private readonly IMapper _mapper;
         private readonly IFamilyRepository<FamilyModel> _familyRepository;
-        //protected readonly IHttpContextAccessor _httpContextAccessor;
-       // protected readonly string userId;
-        public FamilyQueryHandlers(IMapper mapper, IFamilyRepository<FamilyModel> familyRepository)//, IHttpContextAccessor httpContextAccessor
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly string userId;
+        public FamilyQueryHandlers(IMapper mapper, IFamilyRepository<FamilyModel> familyRepository, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _familyRepository = familyRepository;
-            //_httpContextAccessor = httpContextAccessor;
-            //userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _httpContextAccessor = httpContextAccessor;
+            userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         public async Task<IEnumerable<FamilyViewModel>> Handle(GetAllFamilyQuery request, CancellationToken cancellationToken)
         {
             var data = await _familyRepository.GetAll();
 
+            
              return _mapper.Map<IEnumerable<FamilyViewModel>>(data);
 
         }

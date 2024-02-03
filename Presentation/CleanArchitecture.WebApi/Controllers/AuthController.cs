@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Commands.Auth.Login;
 using CleanArchitecture.Application.Commands.Auth.RefreshToken;
 using CleanArchitecture.Application.Commands.Auth.Register;
+using CleanArchitecture.Application.Commands.Auth.Revoke;
 using CleanArchitecture.Domain.Models.AuthResponse;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
@@ -40,6 +41,22 @@ namespace CleanArchitecture.WebApi.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand com)
         {
             return await Handle<RefreshTokenResponse, RefreshTokenCommand>(com);
+
+        }
+
+        [HttpPost]
+        [Route("Revoke")]
+        public async Task<IActionResult> Revoke([FromQuery] RevokeCommand com)
+        {
+            return await Handle<Unit, RevokeCommand>(com);
+
+        }
+
+        [HttpPost]
+        [Route("RevokeAll")]
+        public async Task<IActionResult> RevokeAll()
+        {
+            return await Handle<Unit, RevokeAllCommand>(new RevokeAllCommand());
 
         }
     }

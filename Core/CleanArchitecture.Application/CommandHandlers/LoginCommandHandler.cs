@@ -42,7 +42,7 @@ namespace CleanArchitecture.Application.CommandHandlers
         {
             //get user by email
             User user = await _usermanager.FindByEmailAsync(request.Email);
-
+   
             //return true if the password of email and the password input is equal
             bool checkPassword = await _usermanager.CheckPasswordAsync(user, request.Password);
 

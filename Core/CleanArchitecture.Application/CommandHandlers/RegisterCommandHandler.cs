@@ -54,6 +54,8 @@ namespace CleanArchitecture.Application.CommandHandlers
            //create users
            IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
+            
+
            //create Roles
            if(result.Succeeded)
            {
