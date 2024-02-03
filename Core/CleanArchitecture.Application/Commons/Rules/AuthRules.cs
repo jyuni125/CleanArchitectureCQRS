@@ -28,5 +28,11 @@ namespace CleanArchitecture.Application.Commons.Rules
             if (expiryDate <= DateTime.Now) throw new RefreshTokenShouldNotBeExpiredException();
             return Task.CompletedTask;
         }
+
+        public Task EmailShouldNotBeInvalid(User? user)
+        {
+            if (user is null) throw new EmailShouldNotBeInvalidException();
+            return Task.CompletedTask;
+        }
     }
 }

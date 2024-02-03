@@ -7,13 +7,17 @@ using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Contracts.IServices;
 using CleanArchitecture.Domain.Contracts.IServices.IServices;
 using CleanArchitecture.Domain.Contracts.IServices.IServicesFacades;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Services.Poco;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace CleanArchitecture.WebApi.Controllers
@@ -22,17 +26,24 @@ namespace CleanArchitecture.WebApi.Controllers
     {
         private readonly IEmailSender _emailsender;
 
+        protected readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly string userId;
+        private readonly UserManager<User> _userManager;
 
-
-        public FamilyController(IMediator mediator, IMapper mapper, IFamilyServices<FamilyModel> service,IEmailSender emailsender) : base(mediator, mapper)
+        public FamilyController(UserManager<User> userManager,IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor ,IFamilyServices<FamilyModel> service,IEmailSender emailsender) : base(mediator, mapper)
         {
             _emailsender = emailsender;
+            _httpContextAccessor = httpContextAccessor;
+            userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _userManager = userManager;
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Getall()
         {
+
+
             /*
             await _emailsender.send(new[] 
                                     {
@@ -55,9 +66,13 @@ namespace CleanArchitecture.WebApi.Controllers
 
             return Ok("Email Sent");
               */
-             return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
+              return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
 
+            //User data = await _userManager.FindByEmailAsync(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email));
 
+            //var name = data.Fullname;
+
+            //return Ok(data);
         }
 
         [HttpGet]
