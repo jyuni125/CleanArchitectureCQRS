@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.Commands.Auth.ConfirmEmail;
 using CleanArchitecture.Application.Commands.Auth.Login;
 using CleanArchitecture.Application.Commands.Auth.RefreshToken;
 using CleanArchitecture.Application.Commands.Auth.Register;
@@ -6,16 +7,19 @@ using CleanArchitecture.Application.Commands.Auth.Revoke;
 using CleanArchitecture.Domain.Models.AuthResponse;
 using CleanArchitecture.WebApi.Common;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.WebApi.Controllers
 {
     public class AuthController : BaseController
     {
-        
-        public AuthController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        private readonly IdentityOptions _options;
+
+        public AuthController(IOptions<IdentityOptions> options, IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
-            
+            _options = options.Value;
         }
 
 
@@ -23,8 +27,14 @@ namespace CleanArchitecture.WebApi.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody]RegisterCommand com)
         {
+            /*
+            var confirmEmailOption = _options.SignIn.RequireConfirmedEmail;
+            string forEmail="";
 
-            return await Handle<Unit, RegisterCommand>(com);
+            if (confirmEmailOption)
+                forEmail = "PLEASE VERIFY FIRST YOUR ACCOUNT IN EMAIL BEFORE LOGIN";
+            */
+            return await Handle<string, RegisterCommand>(com);
             
         }
 
@@ -57,6 +67,21 @@ namespace CleanArchitecture.WebApi.Controllers
         public async Task<IActionResult> RevokeAll()
         {
             return await Handle<Unit, RevokeAllCommand>(new RevokeAllCommand());
+
+        }
+
+        //[HttpGet("confirmEmail/{userId}&{token}")]
+        //[HttpGet("confirmEmail")]
+        [HttpGet]
+        [Route("confirmEmail")]
+        public async Task<IActionResult> EmailVerification(string userId, string token)
+        {
+            //string userIdtrim = userId.Replace("userId=", "");
+            //string tokentrim = token.Replace("token=", "");
+
+           // return Ok("userId : " + userId + "  |  " + "Token : " + token+"");
+
+            return await Handle<string, ConfirmEmailCommand>(new ConfirmEmailCommand { userId= userId, token= token });
 
         }
     }

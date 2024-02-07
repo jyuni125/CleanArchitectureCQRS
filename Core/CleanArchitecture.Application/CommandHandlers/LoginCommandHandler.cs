@@ -3,6 +3,7 @@ using CleanArchitecture.Application.Bases;
 using CleanArchitecture.Application.Commands.Auth.Login;
 using CleanArchitecture.Application.Commons.Rules;
 using CleanArchitecture.Domain.Contracts.IRepositories;
+using CleanArchitecture.Domain.Contracts.IServices.IServices;
 using CleanArchitecture.Domain.Contracts.ITokens;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Models;
@@ -11,12 +12,14 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CleanArchitecture.Application.CommandHandlers
 {
@@ -28,14 +31,18 @@ namespace CleanArchitecture.Application.CommandHandlers
         private readonly RoleManager<Role> _rolemanager;
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
+        private readonly IdentityOptions _options;
 
-        public LoginCommandHandler(IConfiguration configuration,ITokenService tokenService,AuthRules authRules,UserManager<User> userManager,RoleManager<Role> roleManager,IMapper mapper, IFamilyRepository<FamilyModel> repo, IHttpContextAccessor httpContextAccessor) : base(mapper, repo, httpContextAccessor)
+
+        public LoginCommandHandler(IOptions<IdentityOptions> options, IConfiguration configuration,ITokenService tokenService,AuthRules authRules,UserManager<User> userManager,RoleManager<Role> roleManager,IMapper mapper, IFamilyRepository<FamilyModel> repo, IHttpContextAccessor httpContextAccessor) : base(mapper, repo, httpContextAccessor)
         {
+            _options = options.Value;
             _authrules = authRules;
             _usermanager = userManager;
             _rolemanager = roleManager;
             _configuration = configuration;
             _tokenService = tokenService;
+    
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -49,6 +56,17 @@ namespace CleanArchitecture.Application.CommandHandlers
 
             //check if user is null or password is not the same
             await _authrules.EmailorPasswordShouldNotBeInvalid(user, checkPassword);
+
+            //----------------------------------------------------------------------------------------------------
+            //checck if the option for comfirmed email is true and if its true, check the user if verified
+            bool RequiredComfirmEmail = _options.SignIn.RequireConfirmedEmail;
+            bool IfEmailIsConfirmed = await _usermanager.IsEmailConfirmedAsync(user);
+
+            _authrules.EmailShouldBeVerified(RequiredComfirmEmail, IfEmailIsConfirmed);
+            //----------------------------------------------------------------------------------------------------
+                
+
+
 
             //get roles
             IList<string> roles = await _usermanager.GetRolesAsync(user);

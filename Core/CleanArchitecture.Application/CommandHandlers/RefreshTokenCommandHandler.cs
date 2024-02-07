@@ -43,7 +43,7 @@ namespace CleanArchitecture.Application.CommandHandlers
             //retrive user using by email. Retrive roles using by user
             var user = await _userManager.FindByEmailAsync(email);
             var roles = await _userManager.GetRolesAsync(user);
-
+            
             //validation of refresh token expiry date
             await _authRules.RefreshTokenShouldNotBeExpired(user.RefreshTokenExpiryTime);
 

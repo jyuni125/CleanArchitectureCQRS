@@ -16,8 +16,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 
 namespace CleanArchitecture.WebApi.Controllers
@@ -29,17 +33,23 @@ namespace CleanArchitecture.WebApi.Controllers
         protected readonly IHttpContextAccessor _httpContextAccessor;
         protected readonly string userId;
         private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _configuration;
+        private readonly IdentityOptions Options;
+       // private readonly SignInManager<User> _signinManager;
 
-        public FamilyController(UserManager<User> userManager,IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor ,IFamilyServices<FamilyModel> service,IEmailSender emailsender) : base(mediator, mapper)
+        public FamilyController(IOptions<IdentityOptions> _options, IConfiguration configuration, UserManager<User> userManager,IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor ,IFamilyServices<FamilyModel> service,IEmailSender emailsender) : base(mediator, mapper)//SignInManager<User> signinManager,
         {
+            Options = _options.Value;
             _emailsender = emailsender;
             _httpContextAccessor = httpContextAccessor;
             userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             _userManager = userManager;
+            _configuration = configuration;
+           //_signinManager = signinManager;
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles ="Admin,user")]
         public async Task<IActionResult> Getall()
         {
 
@@ -66,13 +76,40 @@ namespace CleanArchitecture.WebApi.Controllers
 
             return Ok("Email Sent");
               */
-              return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
+            User uyer = await _userManager.FindByEmailAsync(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email));
+            //bool x =await _signinManager.CanSignInAsync(data);
+            bool y = await _userManager.IsEmailConfirmedAsync(uyer);
 
-            //User data = await _userManager.FindByEmailAsync(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email));
+            bool z = Options.SignIn.RequireConfirmedEmail;
 
-            //var name = data.Fullname;
 
-            //return Ok(data);
+            //return Ok(Options.SignIn.RequireConfirmedEmail+" : "+y);
+            /*
+            if (z)
+                return await Handle<IEnumerable<FamilyViewModel>, GetAllFamilyQuery>(new GetAllFamilyQuery());
+            else
+                return Ok("Please Confirm Email First");
+            */
+            
+            User data = await _userManager.FindByEmailAsync(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email));
+    
+
+
+
+            var name = data.Fullname;
+
+
+            var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(data);
+            var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
+            string url = $"{_configuration["JWT:Issuer"]}/api/Family/confirmEmail?userId={data.Id}&token={validEmailToken}";
+
+            // return Ok((confirmEmailToken is not null)?confirmEmailToken.ToString():"not found");
+
+            var ressult =await _userManager.ConfirmEmailAsync(data, confirmEmailToken);
+
+            return Ok(ressult);
+            
         }
 
         [HttpGet]
@@ -85,6 +122,7 @@ namespace CleanArchitecture.WebApi.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "user")]
         [Route("ByLastname")]
         public async Task<IActionResult> GetByLastname([FromQuery] GetAllFamilyByLastnameDTO dto)
         {
