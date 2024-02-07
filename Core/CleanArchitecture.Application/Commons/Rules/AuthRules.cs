@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Bases;
 using CleanArchitecture.Application.Commons.Exceptions;
 using CleanArchitecture.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace CleanArchitecture.Application.Commons.Rules
 {
     public class AuthRules : BaseRules
     {
+
         public Task UserShouldNotExist(User? user)
         {
             if (user is not null) throw new UserAlreadyExistException();
@@ -32,6 +34,12 @@ namespace CleanArchitecture.Application.Commons.Rules
         public Task EmailShouldNotBeInvalid(User? user)
         {
             if (user is null) throw new EmailShouldNotBeInvalidException();
+            return Task.CompletedTask;
+        }
+
+        public Task EmailShouldBeVerified(bool settingsSetup, bool userEmailConfirmed)
+        {
+            if (settingsSetup && !userEmailConfirmed) throw new EmailConfirmationException();
             return Task.CompletedTask;
         }
     }

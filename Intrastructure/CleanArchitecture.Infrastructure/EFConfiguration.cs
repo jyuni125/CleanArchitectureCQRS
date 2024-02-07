@@ -8,6 +8,7 @@ using CleanArchitecture.Infrastructure.Databases.Repositories;
 using CleanArchitecture.Infrastructure.Tokens;
 using CleanArchitecture.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +42,7 @@ namespace CleanArchitecture.Infrastructure
 
 
 
-            //for token
+            //for authentication config
             services.AddIdentityCore<User>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
@@ -49,10 +50,11 @@ namespace CleanArchitecture.Infrastructure
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireDigit = false;
-                opt.SignIn.RequireConfirmedEmail = false;
+                opt.SignIn.RequireConfirmedEmail = true;
             })
-                .AddRoles<Role>()
-                .AddEntityFrameworkStores<FamilyDBContext>();
+                .AddRoles<Role>()   
+                .AddEntityFrameworkStores<FamilyDBContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);          // ---- this is for GenerateEmailConfirmationTokenAsync
 
 
 

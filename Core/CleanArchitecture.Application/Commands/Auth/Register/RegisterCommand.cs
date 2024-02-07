@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Commands.Auth.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : IRequest<string>
     {
         public string Fullname { get; set; }    
         public string Email { get; set; }

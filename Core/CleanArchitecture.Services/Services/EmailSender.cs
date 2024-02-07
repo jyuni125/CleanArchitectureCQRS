@@ -39,7 +39,7 @@ namespace CleanArchitecture.Services.Services
                 message.To.Add(new MailAddress(email));
             message.Body = body;
             message.IsBodyHtml = isHtml;
-            message.From = new MailAddress("Panget Support <no-reply@somedomain.com>");        //"Application Support <no-reply@somedomain.com>"
+            message.From = new MailAddress("Application Support <no-reply@somedomain.com>");        //"Application Support <no-reply@somedomain.com>"
             if(attachment!=null)
             message.Attachments.Add(new Attachment(new MemoryStream(attachment),filename));
 
